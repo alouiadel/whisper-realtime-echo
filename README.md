@@ -15,8 +15,7 @@ A modern GUI for Faster Whisper speech recognition model using Flet framework.
 - 💻 GPU (CUDA) or CPU processing
 - 📊 Real-time transcription status
 - 🧩 Modular, maintainable codebase
-- 📋 Copy transcription results to clipboard
-- 📜 Access clipboard history of previous transcriptions
+- 📋 Copy results to clipboard with history access
 - 🌓 Toggle between light and dark themes
 
 ## 📋 Model Information
@@ -55,27 +54,28 @@ python main.py
 ```
 
 1. 📂 Click "Select Audio File" or 🎤 "Start Recording"
-2. 🌐 Choose model type (English-only/Multilingual)
-3. 📊 Select model size and device
+2. 🌐 Choose model type and size
+3. 📊 Select processing device (CPU/GPU)
 4. ▶️ Click "Transcribe"
-5. 📝 View results in real-time
-6. 📋 Copy results to clipboard with one click
-7. 📜 Access previous transcriptions via the history button
-8. 🌓 Toggle between light and dark themes using the button in the top-right corner
+5. 📝 View results and use the toolbar to:
+   - 📋 Copy to clipboard
+   - 📜 Access transcript history
+   - 🌓 Toggle theme (top-right corner)
 
 ## 📝 Notes & Limitations
 
-- **Language Selection**: The language dropdown helps Whisper optimize recognition for specific languages but does not translate content. English audio will still be transcribed as English even when another language is selected.
+- **Language Selection**: Helps Whisper optimize recognition but doesn't translate content. English audio will still be transcribed as English even when another language is selected.
 
-- **Transcribe vs. Translate**: Whisper supports two modes:
+- **Transcribe vs. Translate Modes**:
   - **Transcribe**: Converts speech to text in the original language (default)
-  - **Translate**: Converts speech from any language to English text (enable with "Translate to English" checkbox)
+  - **Translate**: Converts speech from any language to English text
 
-- **Translation Mode**: When "Translate to English" is selected, the language is automatically set to "Auto-detect" as this provides the best results for translation. Whisper requires language auto-detection for optimal translation to English.
+- **Translation Best Practices**: 
+  - Automatically sets language to "Auto-detect" for optimal results
+  - Works best with larger models (large or turbo) and clear audio
+  - Some languages may require transcribing first, then using a separate translation service
 
-- **Translation Limitations**: Translation may not work reliably for all language combinations. For best translation results, use larger models (large or turbo) and ensure the audio quality is clear. Some languages or accents might require using transcribe mode first, then a separate translation service.
-
-- **System Requirements**: If the app crashes unexpectedly, it may be due to insufficient RAM or VRAM for the selected model size. Try using a smaller model or ensuring your system meets the memory requirements listed in the model table.
+- **System Requirements**: If crashes occur, try using a smaller model or ensure your system meets the memory requirements in the model table.
 
 ## 🎧 Supported Audio Formats
 
@@ -98,6 +98,5 @@ This project is powered by [Faster Whisper](https://github.com/SYSTRAN/faster-wh
 ## 📜 Clipboard History
 
 - View, copy, and reuse previous transcriptions
-- Transcription history is saved between sessions
-- Each entry includes timestamp and model information
+- Saved between sessions with timestamps and model info
 - Most recent 50 entries are retained 
