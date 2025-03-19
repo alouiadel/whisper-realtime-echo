@@ -38,7 +38,7 @@ class ModelSelector:
                 ft.dropdown.Option("large", "Large"),
                 ft.dropdown.Option("turbo", "Turbo"),
             ],
-            value="base",
+            value="tiny",
             width=200,
             border_color=ft.Colors.GREY_700,
             focused_border_color=AppThemeLang.SECONDARY_COLOR,
