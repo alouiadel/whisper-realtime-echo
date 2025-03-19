@@ -50,7 +50,7 @@ def create_result_section():
     """Create the transcription result section.
     
     Returns:
-        Tuple of (section container, result text field)
+        Tuple of (section container, result text field, copy button)
     """
     result_text = ft.TextField(
         multiline=True,
@@ -63,15 +63,25 @@ def create_result_section():
         expand=True,
     )
     
+    copy_button = ft.IconButton(
+        icon=ft.icons.COPY,
+        tooltip="Copy to clipboard",
+        icon_color=AppTheme.SECONDARY_COLOR,
+        visible=False,
+    )
+    
     results_section = ft.Container(
         content=ft.Column([
-            create_section_title("Transcription Result"),
+            ft.Row([
+                create_section_title("Transcription Result"),
+                copy_button,
+            ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             result_text,
         ]),
         expand=True,
     )
     
-    return results_section, result_text
+    return results_section, result_text, copy_button
 
 def create_controls_section():
     """Create the transcription controls section.

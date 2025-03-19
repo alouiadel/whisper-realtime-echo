@@ -32,7 +32,7 @@ def WhisperApp(page: ft.Page):
     
     model_section, vram_card, speed_card = create_model_section(model_selector)
     
-    results_section, result_text = create_result_section()
+    results_section, result_text, copy_button = create_result_section()
     
     controls_section, transcribe_button, progress_ring, status_text = create_controls_section()
     
@@ -48,6 +48,7 @@ def WhisperApp(page: ft.Page):
     def on_result(text):
         """Display transcription result in text field."""
         result_text.value = text
+        copy_button.visible = bool(text)
         page.update()
     
     def on_error(error):
@@ -61,6 +62,23 @@ def WhisperApp(page: ft.Page):
         """Clean up UI after transcription is complete."""
         progress_ring.visible = False
         page.update()
+    
+    def copy_to_clipboard(e):
+        """Copy transcription text to clipboard."""
+        page.set_clipboard(result_text.value)
+        status_text.value = "Copied to clipboard!"
+        status_text.color = AppTheme.SUCCESS_COLOR
+        page.update()
+        
+        page.delay(2, lambda _: reset_status())
+        
+    def reset_status():
+        """Reset status text to ready state."""
+        status_text.value = "Ready"
+        status_text.color = AppTheme.SUCCESS_COLOR
+        page.update()
+    
+    copy_button.on_click = copy_to_clipboard
     
     whisper_service = WhisperService(
         on_status_update=on_status_update,
@@ -114,6 +132,7 @@ def WhisperApp(page: ft.Page):
             return
         
         result_text.value = ""
+        copy_button.visible = False
         progress_ring.visible = True
         page.update()
         
