@@ -78,7 +78,18 @@ def WhisperApp(page: ft.Page):
     
     results_section, result_text, copy_button, history_button = create_result_section()
     
-    controls_section, transcribe_button, progress_ring, status_text, vad_checkbox = create_controls_section()
+    controls_section, transcribe_button, progress_ring, status_text, vad_checkbox, translate_checkbox = create_controls_section()
+    
+    def translate_checkbox_changed(_):
+        if translate_checkbox.value:
+            model_selector.language_dropdown.value = "auto"
+            model_selector.language_dropdown.disabled = True
+        else:
+            if model_selector.model_type.value == "multilingual":
+                model_selector.language_dropdown.disabled = False
+        page.update()
+    
+    translate_checkbox.on_change = translate_checkbox_changed
     
     def on_history_item_copy(text):
         """Handle when history item is copied."""
@@ -184,6 +195,10 @@ def WhisperApp(page: ft.Page):
             status_text.value = "Ready"
             status_text.color = AppThemeLang.SUCCESS_COLOR
         
+        translate_checkbox.visible = model_selector.model_type.value == "multilingual"
+        if model_selector.model_type.value == "english_only":
+            translate_checkbox.value = False
+            
         vram_card.content.content.controls[1].value = model_selector.get_memory_info()
         speed_card.content.content.controls[1].value = model_selector.get_speed_info()
         page.update()
@@ -209,12 +224,15 @@ def WhisperApp(page: ft.Page):
         progress_ring.visible = True
         page.update()
         
+        task = "translate" if translate_checkbox.value else "transcribe"
+        
         whisper_service.transcribe(
             file_path=selected_file_path.value,
             model_name=model_name,
             device=model_selector.device_dropdown.value,
             use_vad=vad_checkbox.value,
-            language=model_selector.language_dropdown.value
+            language=model_selector.language_dropdown.value,
+            task=task
         )
     
     transcribe_button.on_click = start_transcription

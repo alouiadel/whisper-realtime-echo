@@ -19,7 +19,7 @@ class WhisperService:
         self.on_error = on_error
         self.on_complete = on_complete
     
-    def transcribe(self, file_path, model_name, device, use_vad=True, vad_parameters=None, language=None):
+    def transcribe(self, file_path, model_name, device, use_vad=True, vad_parameters=None, language=None, task="transcribe"):
         """Transcribe audio file using specified Whisper model.
         
         Args:
@@ -29,6 +29,7 @@ class WhisperService:
             use_vad: Whether to use VAD filter to remove silence
             vad_parameters: Custom VAD parameters dict (optional)
             language: Language code to use for transcription (optional)
+            task: Task to perform (transcribe or translate)
         """
         def _transcribe_thread():
             try:
@@ -40,7 +41,10 @@ class WhisperService:
                 model = WhisperModel(model_name, device=device_type, compute_type=compute_type)
                 
                 vad_status = " with VAD filter" if use_vad else ""
-                self.on_status_update(f"Transcribing audio{vad_status}...")
+                if task == "translate":
+                    self.on_status_update(f"Translating audio to English{vad_status}...")
+                else:
+                    self.on_status_update(f"Transcribing audio{vad_status}...")
                 
                 lang = None if language == "auto" else language
                 
@@ -48,13 +52,17 @@ class WhisperService:
                     file_path,
                     vad_filter=use_vad,
                     vad_parameters=vad_parameters,
-                    language=lang
+                    language=lang,
+                    task=task
                 )
                 
                 transcript = " ".join([segment.text for segment in segments])
                 
                 self.on_result(transcript)
-                self.on_status_update("Transcription complete!")
+                if task == "translate":
+                    self.on_status_update("Translation complete!")
+                else:
+                    self.on_status_update("Transcription complete!")
                 self.on_complete()
             except Exception as e:
                 self.on_error(str(e))

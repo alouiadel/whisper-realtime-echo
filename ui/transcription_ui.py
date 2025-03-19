@@ -127,7 +127,7 @@ def create_controls_section():
     """Create the transcription controls section.
     
     Returns:
-        Tuple of (section container, button, progress ring, status text, vad_checkbox)
+        Tuple of (section container, button, progress ring, status text, vad_checkbox, translate_checkbox)
     """
     transcribe_button = ft.ElevatedButton(
         "Transcribe",
@@ -148,6 +148,13 @@ def create_controls_section():
         value=True,
     )
     
+    translate_checkbox = ft.Checkbox(
+        label="Translate to English",
+        value=False,
+        tooltip="Convert speech from any language to English text",
+        on_change=None,
+    )
+    
     controls_section = create_section_container(
         ft.Column([
             ft.Row([
@@ -155,11 +162,14 @@ def create_controls_section():
                 progress_ring,
                 status_text,
             ]),
-            vad_checkbox,
+            ft.Row([
+                vad_checkbox,
+                translate_checkbox,
+            ]),
         ])
     )
     
-    return controls_section, transcribe_button, progress_ring, status_text, vad_checkbox
+    return controls_section, transcribe_button, progress_ring, status_text, vad_checkbox, translate_checkbox
 
 def create_model_section(model_selector):
     """Create the model selection section.

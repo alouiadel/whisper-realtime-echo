@@ -10,6 +10,7 @@ A modern GUI for Faster Whisper speech recognition model using Flet framework.
 - 🎤 Record audio directly and transcribe it
 - 🌍 Choose between English-only and multilingual models
 - 🗣️ Select language for multilingual models (auto-detect available)
+- 🌐 Translate any language to English text
 - 📏 Select model size with VRAM/speed indicators
 - 💻 GPU (CUDA) or CPU processing
 - 📊 Real-time transcription status
@@ -65,8 +66,14 @@ python main.py
 - **Language Selection**: The language dropdown helps Whisper optimize recognition for specific languages but does not translate content. English audio will still be transcribed as English even when another language is selected.
 
 - **Transcribe vs. Translate**: Whisper supports two modes:
-  - **Transcribe**: Converts speech to text in the original language (default in this app)
-  - **Translate**: Converts speech from any language to English text (not currently implemented)
+  - **Transcribe**: Converts speech to text in the original language (default)
+  - **Translate**: Converts speech from any language to English text (enable with "Translate to English" checkbox)
+
+- **Translation Mode**: When "Translate to English" is selected, the language is automatically set to "Auto-detect" as this provides the best results for translation. Whisper requires language auto-detection for optimal translation to English.
+
+- **Translation Limitations**: Translation may not work reliably for all language combinations. For best translation results, use larger models (large or turbo) and ensure the audio quality is clear. Some languages or accents might require using transcribe mode first, then a separate translation service.
+
+- **System Requirements**: If the app crashes unexpectedly, it may be due to insufficient RAM or VRAM for the selected model size. Try using a smaller model or ensuring your system meets the memory requirements listed in the model table.
 
 ## 🎧 Supported Audio Formats
 
