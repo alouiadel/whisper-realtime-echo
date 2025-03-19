@@ -78,7 +78,7 @@ def WhisperApp(page: ft.Page):
     
     results_section, result_text, copy_button, history_button = create_result_section()
     
-    controls_section, transcribe_button, progress_ring, status_text = create_controls_section()
+    controls_section, transcribe_button, progress_ring, status_text, vad_checkbox = create_controls_section()
     
     def on_history_item_copy(text):
         """Handle when history item is copied."""
@@ -168,7 +168,7 @@ def WhisperApp(page: ft.Page):
         transcribe_button.disabled = not is_valid_model or not has_file
         
         if not is_valid_model:
-            transcribe_button.style.bgcolor = {"": "#6200EE80"}
+            transcribe_button.style.bgcolor = {"": AppTheme.PRIMARY_COLOR_TRANSLUCENT}
             transcribe_button.tooltip = "This model is not available in English-only mode"
         elif not has_file:
             transcribe_button.style.bgcolor = {"": AppTheme.DISABLED_COLOR}
@@ -212,7 +212,8 @@ def WhisperApp(page: ft.Page):
         whisper_service.transcribe(
             file_path=selected_file_path.value,
             model_name=model_name,
-            device=model_selector.device_dropdown.value
+            device=model_selector.device_dropdown.value,
+            use_vad=vad_checkbox.value
         )
     
     transcribe_button.on_click = start_transcription

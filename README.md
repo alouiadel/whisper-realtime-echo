@@ -1,6 +1,6 @@
 # 🎙️ Realtime Whisper Flet
 
-A modern GUI for OpenAI's Whisper speech recognition model using Flet framework.
+A modern GUI for Faster Whisper speech recognition model using Flet framework.
 
 > ⚠️ This application has been tested and confirmed working on Windows. While it may work on other platforms (Linux, macOS), they have not been officially tested.
 
@@ -69,13 +69,13 @@ Whisper leverages ffmpeg to process audio, supporting a wide range of formats:
 
 - Python 3.9-3.11
 - Flet
-- OpenAI Whisper
+- Faster Whisper (version 1.1.1)
 - SoundDevice, SoundFile (for audio recording)
 - CUDA-compatible GPU (optional, for faster processing)
 
 ## 🙏 Credits
 
-This project is powered by [OpenAI's Whisper](https://github.com/openai/whisper), a state-of-the-art automatic speech recognition system. The Whisper model was trained on a large dataset of diverse audio and is capable of multilingual speech recognition, translation, and language identification.
+This project is powered by [Faster Whisper](https://github.com/SYSTRAN/faster-whisper), a highly optimized implementation of OpenAI's Whisper. The Whisper model was trained on a large dataset of diverse audio and is capable of multilingual speech recognition, translation, and language identification.
 
 ## 📜 Clipboard History
 

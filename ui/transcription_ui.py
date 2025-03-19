@@ -127,7 +127,7 @@ def create_controls_section():
     """Create the transcription controls section.
     
     Returns:
-        Tuple of (section container, button, progress ring, status text)
+        Tuple of (section container, button, progress ring, status text, vad_checkbox)
     """
     transcribe_button = ft.ElevatedButton(
         "Transcribe",
@@ -143,15 +143,23 @@ def create_controls_section():
     progress_ring = ft.ProgressRing(visible=False, color=AppTheme.SECONDARY_COLOR)
     status_text = ft.Text("Ready", color=AppTheme.SUCCESS_COLOR)
     
+    vad_checkbox = ft.Checkbox(
+        label="Use VAD filter (remove silence)",
+        value=True,
+    )
+    
     controls_section = create_section_container(
-        ft.Row([
-            transcribe_button,
-            progress_ring,
-            status_text,
+        ft.Column([
+            ft.Row([
+                transcribe_button,
+                progress_ring,
+                status_text,
+            ]),
+            vad_checkbox,
         ])
     )
     
-    return controls_section, transcribe_button, progress_ring, status_text
+    return controls_section, transcribe_button, progress_ring, status_text, vad_checkbox
 
 def create_model_section(model_selector):
     """Create the model selection section.

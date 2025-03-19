@@ -3,6 +3,7 @@
 class AppTheme:
     """Color constants for application styling."""
     PRIMARY_COLOR = "#6200EE"
+    PRIMARY_COLOR_TRANSLUCENT = "#6200EE80"
     SECONDARY_COLOR = "#03DAC6"
     BACKGROUND_COLOR = "#121212"
     SURFACE_COLOR = "#1E1E1E"

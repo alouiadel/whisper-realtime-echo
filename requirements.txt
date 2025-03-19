@@ -1,5 +1,5 @@
 flet==0.27.6
-openai-whisper==20240930
+faster-whisper==1.1.1
 sounddevice==0.5.1
 soundfile==0.13.1
 numpy==2.0.2

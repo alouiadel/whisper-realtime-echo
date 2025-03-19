@@ -1,9 +1,9 @@
 """Service for handling Whisper model transcription in a background thread."""
-import whisper
 import threading
+from faster_whisper import WhisperModel
 
 class WhisperService:
-    """Service for processing audio files with OpenAI's Whisper model."""
+    """Service for processing audio files with Faster Whisper model."""
     
     def __init__(self, on_status_update, on_result, on_error, on_complete):
         """Initialize service with callback functions.
@@ -19,25 +19,37 @@ class WhisperService:
         self.on_error = on_error
         self.on_complete = on_complete
     
-    def transcribe(self, file_path, model_name, device):
+    def transcribe(self, file_path, model_name, device, use_vad=True, vad_parameters=None):
         """Transcribe audio file using specified Whisper model.
         
         Args:
             file_path: Path to audio file
             model_name: Whisper model name to use
             device: Device to run model on (cpu/cuda)
+            use_vad: Whether to use VAD filter to remove silence
+            vad_parameters: Custom VAD parameters dict (optional)
         """
         def _transcribe_thread():
             try:
                 self.on_status_update(f"Loading model '{model_name}'...")
                 
-                model = whisper.load_model(model_name, device=device)
+                compute_type = "float16" if device == "cuda" else "float32"
+                device_type = device if device == "cuda" else "cpu"
                 
-                self.on_status_update("Transcribing audio...")
+                model = WhisperModel(model_name, device=device_type, compute_type=compute_type)
                 
-                result = model.transcribe(file_path)
+                vad_status = " with VAD filter" if use_vad else ""
+                self.on_status_update(f"Transcribing audio{vad_status}...")
                 
-                self.on_result(result["text"])
+                segments, _ = model.transcribe(
+                    file_path,
+                    vad_filter=use_vad,
+                    vad_parameters=vad_parameters
+                )
+                
+                transcript = " ".join([segment.text for segment in segments])
+                
+                self.on_result(transcript)
                 self.on_status_update("Transcription complete!")
                 self.on_complete()
             except Exception as e:
