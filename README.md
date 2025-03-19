@@ -132,3 +132,7 @@ Whisper leverages ffmpeg to process audio, supporting a wide range of formats:
 
 This project is powered by [Faster Whisper](https://github.com/SYSTRAN/faster-whisper), a highly optimized implementation of OpenAI's Whisper. The Whisper model was trained on a large dataset of diverse audio and is capable of multilingual speech recognition, translation, and language identification.
 
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
