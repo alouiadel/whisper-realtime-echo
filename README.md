@@ -4,6 +4,8 @@ A modern GUI for Faster Whisper speech recognition model using Flet framework.
 
 > ⚠️ This application has been tested and confirmed working on Windows. While it may work on other platforms (Linux, macOS), they have not been officially tested.
 
+![Demo](demo.png)
+
 ## ✨ Features
 
 - 🔊 Transcribe audio files with a beautiful UI
