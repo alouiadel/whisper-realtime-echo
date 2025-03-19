@@ -189,8 +189,16 @@ class LiveTranscription:
         try:
             self.on_status_update("Initializing live transcription model...")
             
+            model_path = self.model_path
+            if self.model_path == "tiny.en":
+                model_path = "int8_tiny_en"
+                self.on_status_update("Using local tiny.en model")
+            elif self.model_path == "tiny":
+                model_path = "int8_tiny"
+                self.on_status_update("Using local tiny model")
+            
             self.transcribe_model = WhisperModel(
-                self.model_path,
+                model_path,
                 device=self.device,
                 device_index=self.device_index,
                 compute_type=self.compute_type,

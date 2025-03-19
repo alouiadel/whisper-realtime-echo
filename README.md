@@ -32,6 +32,19 @@ A modern GUI for Faster Whisper speech recognition model using Flet framework.
 
 > 💡 English-only models typically perform better for English transcription.
 
+## 🚀 Included Pre-quantized Models
+
+For optimal real-time transcription speed, the application includes pre-quantized int8 versions of the tiny models:
+
+- `int8_tiny_en`: Pre-quantized tiny.en model for English transcription
+- `int8_tiny`: Pre-quantized tiny model for multilingual transcription
+
+These models were created using CTranslate2's conversion tool with the following command:
+
+```bash
+ct2-transformers-converter --model openai/whisper-tiny.en --output_dir int8_tiny_en --copy_files tokenizer.json preprocessor_config.json --quantization int8
+```
+
 ## 🚀 Quick Start
 
 ### Installation
