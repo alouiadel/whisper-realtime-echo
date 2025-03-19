@@ -10,6 +10,7 @@ A modern GUI for OpenAI's Whisper speech recognition model using Flet framework.
 - 💻 GPU (CUDA) or CPU processing
 - 📊 Real-time transcription status
 - 🧩 Modular, maintainable codebase
+- 📋 Copy transcription results to clipboard
 
 ## 📋 Model Information
 
@@ -46,11 +47,18 @@ pip install -r requirements.txt
 python main.py
 ```
 
-1. 📂 Click "Select Audio File" (.wav, .mp3, .m4a, .ogg)
+1. 📂 Click "Select Audio File"
 2. 🌐 Choose model type (English-only/Multilingual)
 3. 📊 Select model size and device
 4. ▶️ Click "Transcribe"
 5. 📝 View results in real-time
+6. 📋 Copy results to clipboard with one click
+
+## 🎧 Supported Audio Formats
+
+Whisper leverages ffmpeg to process audio, supporting a wide range of formats:
+- Audio files: wav, mp3, m4a, ogg, flac, opus, amr
+- Video files: mp4 (and other video formats with audio tracks)
 
 ## 🧰 Requirements
 

@@ -16,22 +16,27 @@ def create_file_section(file_picker, file_picker_result_handler):
     """
     selected_file_name = ft.Text("No file selected", size=16)
     selected_file_path = ft.Text("")
+    format_hint = ft.Text("Supported formats: wav, mp3, m4a, ogg, flac, opus, amr, mp4", 
+                         size=12, color=ft.colors.GREY_500, italic=True)
     
     file_section = create_section_container(
-        ft.Row([
-            ft.ElevatedButton(
-                "Select Audio File",
-                icon=ft.Icons.UPLOAD_FILE,
-                on_click=lambda _: file_picker.pick_files(
-                    allow_multiple=False,
-                    allowed_extensions=["wav", "mp3", "m4a", "ogg"]
+        ft.Column([
+            ft.Row([
+                ft.ElevatedButton(
+                    "Select Audio File",
+                    icon=ft.Icons.UPLOAD_FILE,
+                    on_click=lambda _: file_picker.pick_files(
+                        allow_multiple=False,
+                        allowed_extensions=["wav", "mp3", "m4a", "ogg", "flac", "opus", "amr", "mp4"]
+                    ),
+                    style=ft.ButtonStyle(
+                        color=ft.Colors.WHITE,
+                        bgcolor=AppTheme.PRIMARY_COLOR,
+                    ),
                 ),
-                style=ft.ButtonStyle(
-                    color=ft.Colors.WHITE,
-                    bgcolor=AppTheme.PRIMARY_COLOR,
-                ),
-            ),
-            selected_file_name,
+                selected_file_name,
+            ]),
+            format_hint
         ])
     )
     
