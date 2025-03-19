@@ -5,6 +5,7 @@ A modern GUI for OpenAI's Whisper speech recognition model using Flet framework.
 ## ✨ Features
 
 - 🔊 Transcribe audio files with a beautiful UI
+- 🎤 Record audio directly and transcribe it
 - 🌍 Choose between English-only and multilingual models
 - 📏 Select model size with VRAM/speed indicators
 - 💻 GPU (CUDA) or CPU processing
@@ -47,7 +48,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-1. 📂 Click "Select Audio File"
+1. 📂 Click "Select Audio File" or 🎤 "Start Recording"
 2. 🌐 Choose model type (English-only/Multilingual)
 3. 📊 Select model size and device
 4. ▶️ Click "Transcribe"
@@ -65,6 +66,7 @@ Whisper leverages ffmpeg to process audio, supporting a wide range of formats:
 - Python 3.9-3.11
 - Flet
 - OpenAI Whisper
+- SoundDevice, SoundFile (for audio recording)
 - CUDA-compatible GPU (optional, for faster processing)
 
 ## 🙏 Credits

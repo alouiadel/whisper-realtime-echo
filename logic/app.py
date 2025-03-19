@@ -10,6 +10,8 @@ from ui.transcription_ui import (
     create_model_section
 )
 from logic.whisper_service import WhisperService
+from logic.audio_recorder import AudioRecorder
+import threading
 
 def WhisperApp(page: ft.Page):
     """Main application initialization and UI setup."""
@@ -25,9 +27,47 @@ def WhisperApp(page: ft.Page):
     
     model_selector = ModelSelector(page, on_model_change)
     
-    file_section, selected_file_path, _ = create_file_section(
+    def on_recorder_status(status):
+        """Handle recorder status updates."""
+        if "error" in status.lower() or "failed" in status.lower():
+            status_text.value = status
+            status_text.color = AppTheme.ERROR_COLOR
+            page.update()
+        elif "saved" in status:
+            status_text.value = "Recording saved"
+            status_text.color = AppTheme.SUCCESS_COLOR
+            page.update()
+    
+    audio_recorder = AudioRecorder(on_status_update=on_recorder_status)
+    
+    def start_recording(_):
+        """Handle start recording button click."""
+        record_button.visible = False
+        stop_button.visible = True
+        selected_file_path.value = ""
+        selected_file_name.value = "Recording..."
+        transcribe_button.disabled = True
+        audio_recorder.start_recording()
+        page.update()
+    
+    def stop_recording(_):
+        """Handle stop recording button click."""
+        record_button.visible = True
+        stop_button.visible = False
+        file_path = audio_recorder.stop_recording()
+        if file_path:
+            selected_file_path.value = file_path
+            selected_file_name.value = "Recorded Audio"
+            update_ui_state()
+        else:
+            selected_file_name.value = "No file selected"
+        page.update()
+    
+    file_section, selected_file_path, selected_file_name, record_button, stop_button = create_file_section(
         file_picker, 
-        lambda: update_ui_state()
+        lambda: update_ui_state(),
+        start_recording,
+        stop_recording
     )
     
     model_section, vram_card, speed_card = create_model_section(model_selector)
@@ -63,14 +103,14 @@ def WhisperApp(page: ft.Page):
         progress_ring.visible = False
         page.update()
     
-    def copy_to_clipboard(e):
+    def copy_to_clipboard(_):
         """Copy transcription text to clipboard."""
         page.set_clipboard(result_text.value)
         status_text.value = "Copied to clipboard!"
         status_text.color = AppTheme.SUCCESS_COLOR
         page.update()
         
-        page.delay(2, lambda _: reset_status())
+        threading.Timer(2.0, reset_status).start()
         
     def reset_status():
         """Reset status text to ready state."""
@@ -115,7 +155,7 @@ def WhisperApp(page: ft.Page):
         speed_card.content.content.controls[1].value = model_selector.get_speed_info()
         page.update()
     
-    def start_transcription(e):
+    def start_transcription(_):
         """Start transcription process with selected model and file."""
         if not selected_file_path.value:
             status_text.value = "Please select an audio file first"
@@ -143,6 +183,11 @@ def WhisperApp(page: ft.Page):
         )
     
     transcribe_button.on_click = start_transcription
+    
+    def on_close(_):
+        audio_recorder.cleanup()
+    
+    page.on_close = on_close
     
     page.add(
         header,
