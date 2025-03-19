@@ -7,8 +7,10 @@ def configure_page(page: ft.Page):
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 30
     page.window.center()
-    page.window_width = 800
-    page.window_height = 700
+    page.window.width = 1000
+    page.window.height = 900
+    page.window.resizable = False
+    page.window.maximizable = False
     page.bgcolor = AppThemeLang.BACKGROUND_COLOR
 
 def toggle_theme(e):
