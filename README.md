@@ -12,6 +12,7 @@ A modern GUI for OpenAI's Whisper speech recognition model using Flet framework.
 - 📊 Real-time transcription status
 - 🧩 Modular, maintainable codebase
 - 📋 Copy transcription results to clipboard
+- 📜 Access clipboard history of previous transcriptions
 
 ## 📋 Model Information
 
@@ -54,6 +55,7 @@ python main.py
 4. ▶️ Click "Transcribe"
 5. 📝 View results in real-time
 6. 📋 Copy results to clipboard with one click
+7. 📜 Access previous transcriptions via the history button
 
 ## 🎧 Supported Audio Formats
 
@@ -71,4 +73,11 @@ Whisper leverages ffmpeg to process audio, supporting a wide range of formats:
 
 ## 🙏 Credits
 
-This project is powered by [OpenAI's Whisper](https://github.com/openai/whisper), a state-of-the-art automatic speech recognition system. The Whisper model was trained on a large dataset of diverse audio and is capable of multilingual speech recognition, translation, and language identification. 
+This project is powered by [OpenAI's Whisper](https://github.com/openai/whisper), a state-of-the-art automatic speech recognition system. The Whisper model was trained on a large dataset of diverse audio and is capable of multilingual speech recognition, translation, and language identification.
+
+## 📜 Clipboard History
+
+- View, copy, and reuse previous transcriptions
+- Transcription history is saved between sessions
+- Each entry includes timestamp and model information
+- Most recent 50 entries are retained 

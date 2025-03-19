@@ -9,8 +9,10 @@ from ui.transcription_ui import (
     create_controls_section, 
     create_model_section
 )
+from ui.clipboard_history_ui import create_history_dialog
 from logic.whisper_service import WhisperService
 from logic.audio_recorder import AudioRecorder
+from logic.clipboard_history import ClipboardHistory
 import threading
 
 def WhisperApp(page: ft.Page):
@@ -21,6 +23,8 @@ def WhisperApp(page: ft.Page):
     page.overlay.append(file_picker)
     
     header = create_header()
+    
+    clipboard_history = ClipboardHistory()
     
     def on_model_change():
         update_ui_state()
@@ -72,9 +76,28 @@ def WhisperApp(page: ft.Page):
     
     model_section, vram_card, speed_card = create_model_section(model_selector)
     
-    results_section, result_text, copy_button = create_result_section()
+    results_section, result_text, copy_button, history_button = create_result_section()
     
     controls_section, transcribe_button, progress_ring, status_text = create_controls_section()
+    
+    def on_history_item_copy(text):
+        """Handle when history item is copied."""
+        result_text.value = text
+        copy_button.visible = True
+        status_text.value = "Copied from history!"
+        status_text.color = AppTheme.SUCCESS_COLOR
+        page.update()
+        threading.Timer(2.0, reset_status).start()
+    
+    history_dialog, open_history_dialog = create_history_dialog(
+        page, 
+        clipboard_history, 
+        on_history_item_copy
+    )
+    
+    page.overlay.append(history_dialog)
+    
+    history_button.on_click = lambda _: open_history_dialog()
     
     def on_status_update(status):
         """Update status text and color based on transcription process."""
@@ -89,6 +112,11 @@ def WhisperApp(page: ft.Page):
         """Display transcription result in text field."""
         result_text.value = text
         copy_button.visible = bool(text)
+        
+        if text.strip():
+            model_name = model_selector.get_model_name() or ""
+            clipboard_history.add_item(text, model_name)
+            
         page.update()
     
     def on_error(error):
@@ -105,10 +133,15 @@ def WhisperApp(page: ft.Page):
     
     def copy_to_clipboard(_):
         """Copy transcription text to clipboard."""
-        page.set_clipboard(result_text.value)
+        text = result_text.value
+        page.set_clipboard(text)
         status_text.value = "Copied to clipboard!"
         status_text.color = AppTheme.SUCCESS_COLOR
         page.update()
+        
+        if text.strip():
+            model_name = model_selector.get_model_name() or ""
+            clipboard_history.add_item(text, model_name)
         
         threading.Timer(2.0, reset_status).start()
         

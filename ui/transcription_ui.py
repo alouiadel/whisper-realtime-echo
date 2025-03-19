@@ -81,7 +81,7 @@ def create_result_section():
     """Create the transcription result section.
     
     Returns:
-        Tuple of (section container, result text field, copy button)
+        Tuple of (section container, result text field, copy button, history button)
     """
     result_text = ft.TextField(
         multiline=True,
@@ -101,18 +101,27 @@ def create_result_section():
         visible=False,
     )
     
+    history_button = ft.IconButton(
+        icon=ft.icons.HISTORY,
+        tooltip="Clipboard history",
+        icon_color=AppTheme.PRIMARY_COLOR,
+    )
+    
     results_section = ft.Container(
         content=ft.Column([
             ft.Row([
                 create_section_title("Transcription Result"),
-                copy_button,
+                ft.Row([
+                    copy_button,
+                    history_button,
+                ]),
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             result_text,
         ]),
         expand=True,
     )
     
-    return results_section, result_text, copy_button
+    return results_section, result_text, copy_button, history_button
 
 def create_controls_section():
     """Create the transcription controls section.
