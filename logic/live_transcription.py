@@ -6,6 +6,7 @@ from typing import List, Union, Callable, Optional
 import numpy as np
 import threading
 import multiprocessing
+from faster_whisper import WhisperModel
 
 BlockSize = 30
 Vocals = [50, 1000]
@@ -147,22 +148,7 @@ class LiveTranscription:
     
     def _process_buffers(self):
         """Process audio buffers and transcribe them."""
-        from faster_whisper import WhisperModel
-        
         try:
-            self.on_status_update("Initializing live transcription model...")
-            
-            self.transcribe_model = WhisperModel(
-                self.model_path,
-                device=self.device,
-                device_index=self.device_index,
-                compute_type=self.compute_type,
-                cpu_threads=self.threads,
-            )
-            
-            vad_status = " with VAD filter" if self.vad_filter else ""
-            self.on_status_update(f"Live transcription ready (using {self.compute_type}{vad_status}, {self.threads} threads)")
-            
             while self.running:
                 if len(self.buffers_to_process) > 0:
                     _buffer = self.buffers_to_process.pop(0)
@@ -174,7 +160,7 @@ class LiveTranscription:
                             vad_filter=self.vad_filter,
                             beam_size=1,
                             best_of=1,
-                            patience=1.0,
+                            patience=0.7,
                             temperature=[0.0],
                             condition_on_previous_text=False,
                             without_timestamps=True,
@@ -201,6 +187,19 @@ class LiveTranscription:
             return True
         
         try:
+            self.on_status_update("Initializing live transcription model...")
+            
+            self.transcribe_model = WhisperModel(
+                self.model_path,
+                device=self.device,
+                device_index=self.device_index,
+                compute_type=self.compute_type,
+                cpu_threads=self.threads,
+            )
+            
+            vad_status = " with VAD filter" if self.vad_filter else ""
+            self.on_status_update(f"Live transcription ready (using {self.compute_type}{vad_status}, {self.threads} threads)")
+            
             self.running = True
             self.buffer = np.zeros((0, 1))
             self.prevblock = np.zeros((0, 1))
