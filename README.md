@@ -17,6 +17,7 @@ A modern GUI for Faster Whisper speech recognition model using Flet framework.
 - 🧩 Modular, maintainable codebase
 - 📋 Copy transcription results to clipboard
 - 📜 Access clipboard history of previous transcriptions
+- 🌓 Toggle between light and dark themes
 
 ## 📋 Model Information
 
@@ -60,6 +61,7 @@ python main.py
 5. 📝 View results in real-time
 6. 📋 Copy results to clipboard with one click
 7. 📜 Access previous transcriptions via the history button
+8. 🌓 Toggle between light and dark themes using the button in the top-right corner
 
 ## 📝 Notes & Limitations
 
