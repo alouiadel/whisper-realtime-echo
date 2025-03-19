@@ -13,6 +13,7 @@ from ui.clipboard_history_ui import create_history_dialog
 from logic.whisper_service import WhisperService
 from logic.audio_recorder import AudioRecorder
 from logic.clipboard_history import ClipboardHistory
+from logic.live_transcription import LiveTranscription
 import threading
 
 def WhisperApp(page: ft.Page):
@@ -78,7 +79,115 @@ def WhisperApp(page: ft.Page):
     
     results_section, result_text, copy_button, history_button = create_result_section()
     
-    controls_section, transcribe_button, progress_ring, status_text, vad_checkbox, translate_checkbox = create_controls_section()
+    controls_section, transcribe_button, progress_ring, status_text, vad_checkbox, translate_checkbox, live_button = create_controls_section()
+    
+    live_transcription = None
+    is_live_active = False
+    live_accumulated_text = ""
+    
+    def on_live_transcription(text):
+        """Handle live transcription result."""
+        nonlocal live_accumulated_text
+        current_text = result_text.value if result_text.value else ""
+        result_text.value = current_text + (" " if current_text else "") + text
+        copy_button.visible = True
+        
+        live_accumulated_text += (" " if live_accumulated_text else "") + text
+            
+        page.update()
+    
+    def on_live_status(status):
+        """Handle live transcription status updates."""
+        status_text.value = status
+        if "error" in status.lower() or "failed" in status.lower():
+            status_text.color = AppThemeLang.ERROR_COLOR
+            live_button.text = "Start Live"
+            live_button.icon = ft.icons.MIC_NONE
+        elif "started" in status.lower():
+            status_text.color = AppThemeLang.SUCCESS_COLOR
+        elif "stopped" in status.lower():
+            status_text.color = AppThemeLang.SUCCESS_COLOR
+            live_button.text = "Start Live"
+            live_button.icon = ft.icons.MIC_NONE
+        else:
+            status_text.color = AppThemeLang.WARNING_COLOR
+        page.update()
+    
+    def on_live_error(error):
+        """Handle live transcription errors."""
+        status_text.value = f"Error: {error}"
+        status_text.color = AppThemeLang.ERROR_COLOR
+        live_button.text = "Start Live"
+        live_button.icon = ft.icons.MIC_NONE
+        page.update()
+    
+    def toggle_live_transcription(_):
+        """Toggle live transcription on/off."""
+        nonlocal live_transcription, is_live_active, live_accumulated_text
+        
+        if not LiveTranscription.is_available():
+            status_text.value = "Error: sounddevice library not available"
+            status_text.color = AppThemeLang.ERROR_COLOR
+            page.update()
+            return
+        
+        model_name = model_selector.get_model_name()
+        
+        if model_name is None:
+            status_text.value = "Invalid model selection"
+            status_text.color = AppThemeLang.ERROR_COLOR
+            page.update()
+            return
+        
+        if is_live_active:
+            if live_transcription:
+                live_transcription.stop()
+            is_live_active = False
+            transcribe_button.disabled = False
+            record_button.disabled = False
+            progress_ring.visible = False
+            
+            if live_accumulated_text.strip():
+                model_name = model_selector.get_model_name() or ""
+                clipboard_history.add_item(live_accumulated_text, model_name)
+                live_accumulated_text = ""
+        else:
+            result_text.value = ""
+            live_accumulated_text = ""
+            copy_button.visible = False
+            progress_ring.visible = True
+            
+            task = "translate" if translate_checkbox.value else "transcribe"
+            language = None if model_selector.language_dropdown.value == "auto" else model_selector.language_dropdown.value
+            
+            compute_type = "int8"
+            
+            live_transcription = LiveTranscription(
+                on_transcription=on_live_transcription,
+                on_status_update=on_live_status,
+                on_error=on_live_error,
+                model_path=model_name,
+                device=model_selector.device_dropdown.value,
+                language=language,
+                task=task,
+                compute_type=compute_type,
+                vad_filter=vad_checkbox.value,
+            )
+            
+            success = live_transcription.start()
+            
+            if success:
+                is_live_active = True
+                live_button.text = "Stop Live"
+                live_button.icon = ft.icons.MIC_OFF
+                transcribe_button.disabled = True
+                record_button.disabled = True
+            else:
+                progress_ring.visible = False
+            
+        page.update()
+    
+    live_button.on_click = toggle_live_transcription
     
     def translate_checkbox_changed(_):
         if translate_checkbox.value:
@@ -176,7 +285,7 @@ def WhisperApp(page: ft.Page):
         is_valid_model = model_selector.is_valid_model()
         has_file = bool(selected_file_path.value)
         
-        transcribe_button.disabled = not is_valid_model or not has_file
+        transcribe_button.disabled = not is_valid_model or not has_file or is_live_active
         
         if not is_valid_model:
             transcribe_button.style.bgcolor = {"": AppThemeLang.PRIMARY_COLOR_TRANSLUCENT}
@@ -236,12 +345,7 @@ def WhisperApp(page: ft.Page):
         )
     
     transcribe_button.on_click = start_transcription
-    
-    def on_close(_):
-        audio_recorder.cleanup()
-    
-    page.on_close = on_close
-    
+
     page.add(
         header,
         file_section,

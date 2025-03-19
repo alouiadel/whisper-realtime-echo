@@ -3,7 +3,7 @@ from ui.theme_lang import AppThemeLang
 
 def configure_page(page: ft.Page):
     """Configure the main app page settings"""
-    page.title = "Whisper Transcription App"
+    page.title = "🎙️ Whisper Transcription App ✨"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 30
     page.window.center()
@@ -48,7 +48,7 @@ def create_header():
         content=ft.Row(
             [
                 ft.Text(
-                    "Whisper Transcription App",
+                    "🎙️ Whisper Transcription App ✨",
                     size=30,
                     weight=ft.FontWeight.BOLD,
                     color=ft.Colors.WHITE,

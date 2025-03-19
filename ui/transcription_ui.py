@@ -127,7 +127,7 @@ def create_controls_section():
     """Create the transcription controls section.
     
     Returns:
-        Tuple of (section container, button, progress ring, status text, vad_checkbox, translate_checkbox)
+        Tuple of (section container, button, progress ring, status text, vad_checkbox, translate_checkbox, live_button)
     """
     transcribe_button = ft.ElevatedButton(
         "Transcribe",
@@ -135,6 +135,17 @@ def create_controls_section():
         style=ft.ButtonStyle(
             color=ft.Colors.WHITE,
             bgcolor=AppThemeLang.PRIMARY_COLOR,
+            padding=15,
+        ),
+        height=50,
+    )
+    
+    live_button = ft.ElevatedButton(
+        "Start Live",
+        icon=ft.Icons.MIC_NONE,
+        style=ft.ButtonStyle(
+            color=ft.Colors.WHITE,
+            bgcolor=AppThemeLang.LIVE_COLOR,
             padding=15,
         ),
         height=50,
@@ -159,6 +170,8 @@ def create_controls_section():
         ft.Column([
             ft.Row([
                 transcribe_button,
+                ft.VerticalDivider(width=10),
+                live_button,
                 progress_ring,
                 status_text,
             ]),
@@ -169,7 +182,7 @@ def create_controls_section():
         ])
     )
     
-    return controls_section, transcribe_button, progress_ring, status_text, vad_checkbox, translate_checkbox
+    return controls_section, transcribe_button, progress_ring, status_text, vad_checkbox, translate_checkbox, live_button
 
 def create_model_section(model_selector):
     """Create the model selection section.
