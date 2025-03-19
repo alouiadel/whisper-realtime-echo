@@ -1,3 +1,4 @@
+"""Whisper Transcription App entry point."""
 import flet as ft
 from logic.app import WhisperApp
 

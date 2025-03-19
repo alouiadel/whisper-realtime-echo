@@ -1,4 +1,7 @@
+"""Application theme and color definitions."""
+
 class AppTheme:
+    """Color constants for application styling."""
     PRIMARY_COLOR = "#6200EE"
     SECONDARY_COLOR = "#03DAC6"
     BACKGROUND_COLOR = "#121212"

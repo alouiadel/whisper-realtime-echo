@@ -1,8 +1,17 @@
+"""Model selection UI components and logic."""
 import flet as ft
 from ui.theme import AppTheme
 
 class ModelSelector:
+    """Manages UI and logic for Whisper model selection."""
+    
     def __init__(self, page, on_model_change):
+        """Initialize model selector with UI components.
+        
+        Args:
+            page: Parent flet page
+            on_model_change: Callback when model selection changes
+        """
         self.page = page
         self.on_model_change = on_model_change
         
@@ -66,28 +75,37 @@ class ModelSelector:
         self.page.banner = self.warning_banner
     
     def _close_banner(self):
+        """Hide the warning banner."""
         self.warning_banner.visible = False
         self.page.update()
     
     def _switch_to_multilingual(self):
+        """Switch model type to multilingual and hide banner."""
         self.model_type.value = "multilingual"
         self.warning_banner.visible = False
         self.on_model_change()
         self.page.update()
     
     def _on_model_type_change(self, e):
+        """Handle model type change event."""
         if self.model_type.value == "english_only" and self.model_size.value in ["large", "turbo"]:
             self.warning_banner.visible = True
         self.on_model_change()
         self.page.update()
     
     def _on_model_size_change(self, e):
+        """Handle model size change event."""
         if self.model_type.value == "english_only" and self.model_size.value in ["large", "turbo"]:
             self.warning_banner.visible = True
         self.on_model_change()
         self.page.update()
     
     def get_model_name(self):
+        """Get the formatted model name based on current selections.
+        
+        Returns:
+            String model name or None if invalid combination
+        """
         if self.model_type.value == "english_only":
             if self.model_size.value in ["tiny", "base", "small", "medium"]:
                 return f"{self.model_size.value}.en"
@@ -97,9 +115,19 @@ class ModelSelector:
             return self.model_size.value
     
     def is_valid_model(self):
+        """Check if current model selection is valid.
+        
+        Returns:
+            Boolean indicating if selection is valid
+        """
         return not (self.model_type.value == "english_only" and self.model_size.value in ["large", "turbo"])
     
     def get_memory_info(self):
+        """Get estimated VRAM usage for current model.
+        
+        Returns:
+            String representation of VRAM usage
+        """
         model_name = self.model_size.value
         memory_map = {
             "tiny": "~1 GB",
@@ -112,6 +140,11 @@ class ModelSelector:
         return memory_map.get(model_name, "Unknown")
     
     def get_speed_info(self):
+        """Get estimated relative speed for current model.
+        
+        Returns:
+            String representation of relative speed
+        """
         model_name = self.model_size.value
         speed_map = {
             "tiny": "~10x",

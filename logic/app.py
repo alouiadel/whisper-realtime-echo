@@ -1,3 +1,4 @@
+"""Main application logic for Whisper Transcription App."""
 import flet as ft
 from ui.theme import AppTheme
 from ui.app_ui import configure_page, create_header
@@ -11,23 +12,19 @@ from ui.transcription_ui import (
 from logic.whisper_service import WhisperService
 
 def WhisperApp(page: ft.Page):
-    # Configure the page
+    """Main application initialization and UI setup."""
     configure_page(page)
     
-    # Initialize the file picker
     file_picker = ft.FilePicker()
     page.overlay.append(file_picker)
     
-    # Create UI components
     header = create_header()
     
-    # Set up model selector with change handler
     def on_model_change():
         update_ui_state()
     
     model_selector = ModelSelector(page, on_model_change)
     
-    # Create UI sections and get their components
     file_section, selected_file_path, _ = create_file_section(
         file_picker, 
         lambda: update_ui_state()
@@ -39,8 +36,8 @@ def WhisperApp(page: ft.Page):
     
     controls_section, transcribe_button, progress_ring, status_text = create_controls_section()
     
-    # Set up WhisperService callback handlers
     def on_status_update(status):
+        """Update status text and color based on transcription process."""
         status_text.value = status
         if status == "Transcribing audio..." or status.startswith("Loading model"):
             status_text.color = AppTheme.WARNING_COLOR
@@ -49,20 +46,22 @@ def WhisperApp(page: ft.Page):
         page.update()
     
     def on_result(text):
+        """Display transcription result in text field."""
         result_text.value = text
         page.update()
     
     def on_error(error):
+        """Handle and display errors."""
         result_text.value = f"Error: {error}"
         status_text.value = "Error occurred"
         status_text.color = AppTheme.ERROR_COLOR
         page.update()
     
     def on_complete():
+        """Clean up UI after transcription is complete."""
         progress_ring.visible = False
         page.update()
     
-    # Initialize the whisper service
     whisper_service = WhisperService(
         on_status_update=on_status_update,
         on_result=on_result,
@@ -70,8 +69,8 @@ def WhisperApp(page: ft.Page):
         on_complete=on_complete
     )
     
-    # Update UI state based on current selections
     def update_ui_state():
+        """Update UI elements based on current model and file selection."""
         is_valid_model = model_selector.is_valid_model()
         has_file = bool(selected_file_path.value)
         
@@ -98,8 +97,8 @@ def WhisperApp(page: ft.Page):
         speed_card.content.content.controls[1].value = model_selector.get_speed_info()
         page.update()
     
-    # Handle transcription button click
     def start_transcription(e):
+        """Start transcription process with selected model and file."""
         if not selected_file_path.value:
             status_text.value = "Please select an audio file first"
             status_text.color = AppTheme.ERROR_COLOR
@@ -124,10 +123,8 @@ def WhisperApp(page: ft.Page):
             device=model_selector.device_dropdown.value
         )
     
-    # Set up button click handler
     transcribe_button.on_click = start_transcription
     
-    # Add all components to the page
     page.add(
         header,
         file_section,
@@ -136,5 +133,4 @@ def WhisperApp(page: ft.Page):
         results_section,
     )
     
-    # Initialize UI state
     update_ui_state() 
