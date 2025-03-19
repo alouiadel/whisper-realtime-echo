@@ -41,6 +41,15 @@ A modern GUI for Faster Whisper speech recognition model using Flet framework.
 git clone https://github.com/alouiadel/realtime-whisper-flet.git
 cd realtime-whisper-flet
 
+# Create and activate virtual environment
+# For Windows:
+python -m venv venv
+venv\Scripts\activate
+
+# For macOS/Linux:
+python -m venv venv
+source venv/bin/activate
+
 # Install dependencies
 pip install -r requirements.txt
 ```
