@@ -14,7 +14,7 @@ def create_file_section(file_picker, file_picker_result_handler, recorder_start_
         recorder_stop_handler: Callback to stop recording
         
     Returns:
-        Tuple of (section container, file path text, file name text, record button, stop button)
+        Tuple of (section container, file path text, file name text, record button, stop button, select file button)
     """
     selected_file_name = ft.Text("No file selected", size=16)
     selected_file_path = ft.Text("")
@@ -42,21 +42,23 @@ def create_file_section(file_picker, file_picker_result_handler, recorder_start_
         visible=False,
     )
     
+    select_file_button = ft.ElevatedButton(
+        "Select Audio File",
+        icon=ft.Icons.UPLOAD_FILE,
+        on_click=lambda _: file_picker.pick_files(
+            allow_multiple=False,
+            allowed_extensions=["wav", "mp3", "m4a", "ogg", "flac", "opus", "amr", "mp4"]
+        ),
+        style=ft.ButtonStyle(
+            color=ft.Colors.WHITE,
+            bgcolor=AppThemeLang.PRIMARY_COLOR,
+        ),
+    )
+    
     file_section = create_section_container(
         ft.Column([
             ft.Row([
-                ft.ElevatedButton(
-                    "Select Audio File",
-                    icon=ft.Icons.UPLOAD_FILE,
-                    on_click=lambda _: file_picker.pick_files(
-                        allow_multiple=False,
-                        allowed_extensions=["wav", "mp3", "m4a", "ogg", "flac", "opus", "amr", "mp4"]
-                    ),
-                    style=ft.ButtonStyle(
-                        color=ft.Colors.WHITE,
-                        bgcolor=AppThemeLang.PRIMARY_COLOR,
-                    ),
-                ),
+                select_file_button,
                 ft.VerticalDivider(width=10),
                 record_button,
                 stop_button,
@@ -75,7 +77,7 @@ def create_file_section(file_picker, file_picker_result_handler, recorder_start_
     
     file_picker.on_result = handle_file_picker_result
     
-    return file_section, selected_file_path, selected_file_name, record_button, stop_button
+    return file_section, selected_file_path, selected_file_name, record_button, stop_button, select_file_button
 
 def create_result_section():
     """Create the transcription result section.

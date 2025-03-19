@@ -68,7 +68,7 @@ def WhisperApp(page: ft.Page):
             selected_file_name.value = "No file selected"
         page.update()
     
-    file_section, selected_file_path, selected_file_name, record_button, stop_button = create_file_section(
+    file_section, selected_file_path, selected_file_name, record_button, stop_button, select_file_button = create_file_section(
         file_picker, 
         lambda: update_ui_state(),
         start_recording,
@@ -145,7 +145,16 @@ def WhisperApp(page: ft.Page):
             is_live_active = False
             transcribe_button.disabled = False
             record_button.disabled = False
+            select_file_button.disabled = False
             progress_ring.visible = False
+            
+            model_selector.model_type.disabled = False
+            model_selector.model_size.disabled = False
+            model_selector.device_dropdown.disabled = False
+            model_selector.language_dropdown.disabled = model_selector.model_type.value == "english_only"
+            vad_checkbox.disabled = False
+            translate_checkbox.disabled = False
+            translate_checkbox.visible = model_selector.model_type.value == "multilingual"
             
             if live_accumulated_text.strip():
                 model_name = model_selector.get_model_name() or ""
@@ -182,6 +191,13 @@ def WhisperApp(page: ft.Page):
                 live_button.icon = ft.icons.MIC_OFF
                 transcribe_button.disabled = True
                 record_button.disabled = True
+                select_file_button.disabled = True
+                model_selector.model_type.disabled = True
+                model_selector.model_size.disabled = True
+                model_selector.device_dropdown.disabled = True
+                model_selector.language_dropdown.disabled = True
+                vad_checkbox.disabled = True
+                translate_checkbox.disabled = True
             else:
                 progress_ring.visible = False
             
