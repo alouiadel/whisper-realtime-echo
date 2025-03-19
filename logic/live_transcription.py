@@ -10,8 +10,8 @@ from faster_whisper import WhisperModel
 
 BlockSize = 30
 Vocals = [50, 1000]
-EndBlocks = 33 * 2
-FlushBlocks = 33 * 10
+EndBlocks = 33 * 1
+FlushBlocks = 33 * 5
 
 def get_optimal_thread_count():
     """Calculate optimal thread count (70% of available CPU cores)."""
