@@ -2,7 +2,7 @@
 import flet as ft
 import datetime
 from logic.clipboard_history import ClipboardHistory
-from ui.theme import AppTheme
+from ui.theme_lang import AppThemeLang
 import threading
 
 def create_history_dialog(page: ft.Page, clipboard_history: ClipboardHistory, on_copy: callable):
@@ -57,7 +57,7 @@ def create_history_dialog(page: ft.Page, clipboard_history: ClipboardHistory, on
             
         item_success_text = ft.Text(
             "✓ Copied!",
-            color=AppTheme.SUCCESS_COLOR,
+            color=AppThemeLang.SUCCESS_COLOR,
             weight=ft.FontWeight.BOLD,
             visible=False,
             size=14,
@@ -71,7 +71,7 @@ def create_history_dialog(page: ft.Page, clipboard_history: ClipboardHistory, on
                         ft.Text(
                             item.get("model_name", ""),
                             size=12, 
-                            color=AppTheme.SECONDARY_COLOR, 
+                            color=AppThemeLang.SECONDARY_COLOR, 
                             italic=True
                         ),
                     ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
@@ -91,7 +91,7 @@ def create_history_dialog(page: ft.Page, clipboard_history: ClipboardHistory, on
                             on_click=lambda _, text=item["text"], msg=item_success_text: copy_item(text, msg),
                             style=ft.ButtonStyle(
                                 color=ft.colors.WHITE,
-                                bgcolor=AppTheme.PRIMARY_COLOR,
+                                bgcolor=AppThemeLang.PRIMARY_COLOR,
                             ),
                         ),
                     ], alignment=ft.MainAxisAlignment.END, spacing=10),

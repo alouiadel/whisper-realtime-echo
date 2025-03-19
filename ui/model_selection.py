@@ -1,6 +1,6 @@
 """Model selection UI components and logic."""
 import flet as ft
-from ui.theme import AppTheme
+from ui.theme_lang import AppThemeLang
 
 class ModelSelector:
     """Manages UI and logic for Whisper model selection."""
@@ -24,7 +24,7 @@ class ModelSelector:
             value="english_only",
             width=200,
             border_color=ft.Colors.GREY_700,
-            focused_border_color=AppTheme.SECONDARY_COLOR,
+            focused_border_color=AppThemeLang.SECONDARY_COLOR,
             on_change=self._on_model_type_change,
         )
         
@@ -41,7 +41,7 @@ class ModelSelector:
             value="base",
             width=200,
             border_color=ft.Colors.GREY_700,
-            focused_border_color=AppTheme.SECONDARY_COLOR,
+            focused_border_color=AppThemeLang.SECONDARY_COLOR,
             on_change=self._on_model_size_change,
         )
         
@@ -54,13 +54,36 @@ class ModelSelector:
             value="cuda",
             width=200,
             border_color=ft.Colors.GREY_700,
-            focused_border_color=AppTheme.SECONDARY_COLOR,
+            focused_border_color=AppThemeLang.SECONDARY_COLOR,
             on_change=lambda _: self.on_model_change(),
         )
         
+        language_options = [
+            ft.dropdown.Option("auto", "Auto-detect"),
+        ]
+        
+        language_options.extend([
+            ft.dropdown.Option(code, name)
+            for code, name in sorted(
+                [(k, v) for k, v in AppThemeLang.LANGUAGE_CODES.items() if k != "auto"],
+                key=lambda x: x[1]
+            )
+        ])
+        
+        self.language_dropdown = ft.Dropdown(
+            label="Language",
+            options=language_options,
+            value="en",
+            width=200,
+            border_color=ft.Colors.GREY_700,
+            focused_border_color=AppThemeLang.SECONDARY_COLOR,
+            on_change=lambda _: self.on_model_change(),
+            disabled=True,
+        )
+        
         self.warning_banner = ft.Banner(
-            bgcolor=AppTheme.SURFACE_COLOR,
-            leading=ft.Icon(ft.Icons.WARNING_AMBER_ROUNDED, color=AppTheme.WARNING_COLOR, size=40),
+            bgcolor=AppThemeLang.SURFACE_COLOR,
+            leading=ft.Icon(ft.Icons.WARNING_AMBER_ROUNDED, color=AppThemeLang.WARNING_COLOR, size=40),
             content=ft.Text(
                 "Large and Turbo models are only available in multilingual versions",
                 color=ft.Colors.WHITE,
@@ -90,6 +113,14 @@ class ModelSelector:
         """Handle model type change event."""
         if self.model_type.value == "english_only" and self.model_size.value in ["large", "turbo"]:
             self.warning_banner.visible = True
+            
+        if self.model_type.value == "english_only":
+            self.language_dropdown.value = "en"
+            self.language_dropdown.disabled = True
+        else:
+            self.language_dropdown.value = "auto"
+            self.language_dropdown.disabled = False
+            
         self.on_model_change()
         self.page.update()
     

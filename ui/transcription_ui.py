@@ -1,7 +1,7 @@
 """UI components for the transcription functionality."""
 import flet as ft
 import os
-from ui.theme import AppTheme
+from ui.theme_lang import AppThemeLang
 from ui.components import create_info_card, create_section_title, create_section_container
 
 def create_file_section(file_picker, file_picker_result_handler, recorder_start_handler, recorder_stop_handler):
@@ -27,7 +27,7 @@ def create_file_section(file_picker, file_picker_result_handler, recorder_start_
         on_click=recorder_start_handler,
         style=ft.ButtonStyle(
             color=ft.Colors.WHITE,
-            bgcolor=AppTheme.ERROR_COLOR,
+            bgcolor=AppThemeLang.ERROR_COLOR,
         ),
     )
     
@@ -37,7 +37,7 @@ def create_file_section(file_picker, file_picker_result_handler, recorder_start_
         on_click=recorder_stop_handler,
         style=ft.ButtonStyle(
             color=ft.Colors.WHITE,
-            bgcolor=AppTheme.WARNING_COLOR,
+            bgcolor=AppThemeLang.WARNING_COLOR,
         ),
         visible=False,
     )
@@ -54,7 +54,7 @@ def create_file_section(file_picker, file_picker_result_handler, recorder_start_
                     ),
                     style=ft.ButtonStyle(
                         color=ft.Colors.WHITE,
-                        bgcolor=AppTheme.PRIMARY_COLOR,
+                        bgcolor=AppThemeLang.PRIMARY_COLOR,
                     ),
                 ),
                 ft.VerticalDivider(width=10),
@@ -89,7 +89,7 @@ def create_result_section():
         max_lines=20,
         read_only=True,
         border_color=ft.Colors.GREY_700,
-        focused_border_color=AppTheme.SECONDARY_COLOR,
+        focused_border_color=AppThemeLang.SECONDARY_COLOR,
         text_size=16,
         expand=True,
     )
@@ -97,14 +97,14 @@ def create_result_section():
     copy_button = ft.IconButton(
         icon=ft.icons.COPY,
         tooltip="Copy to clipboard",
-        icon_color=AppTheme.SECONDARY_COLOR,
+        icon_color=AppThemeLang.SECONDARY_COLOR,
         visible=False,
     )
     
     history_button = ft.IconButton(
         icon=ft.icons.HISTORY,
         tooltip="Clipboard history",
-        icon_color=AppTheme.PRIMARY_COLOR,
+        icon_color=AppThemeLang.PRIMARY_COLOR,
     )
     
     results_section = ft.Container(
@@ -134,14 +134,14 @@ def create_controls_section():
         icon=ft.Icons.PLAY_ARROW,
         style=ft.ButtonStyle(
             color=ft.Colors.WHITE,
-            bgcolor=AppTheme.PRIMARY_COLOR,
+            bgcolor=AppThemeLang.PRIMARY_COLOR,
             padding=15,
         ),
         height=50,
     )
     
-    progress_ring = ft.ProgressRing(visible=False, color=AppTheme.SECONDARY_COLOR)
-    status_text = ft.Text("Ready", color=AppTheme.SUCCESS_COLOR)
+    progress_ring = ft.ProgressRing(visible=False, color=AppThemeLang.SECONDARY_COLOR)
+    status_text = ft.Text("Ready", color=AppThemeLang.SUCCESS_COLOR)
     
     vad_checkbox = ft.Checkbox(
         label="Use VAD filter (remove silence)",
@@ -180,6 +180,7 @@ def create_model_section(model_selector):
                 model_selector.model_type,
                 model_selector.model_size,
                 model_selector.device_dropdown,
+                model_selector.language_dropdown,
             ]),
             ft.Row([
                 vram_card,

@@ -1,6 +1,6 @@
 """Reusable UI components for the application."""
 import flet as ft
-from ui.theme import AppTheme
+from ui.theme_lang import AppThemeLang
 
 def create_info_card(title, value, icon):
     """Create an info card with title, value and icon.
@@ -17,7 +17,7 @@ def create_info_card(title, value, icon):
         content=ft.Container(
             content=ft.Column([
                 ft.Row([
-                    ft.Icon(icon, color=AppTheme.SECONDARY_COLOR),
+                    ft.Icon(icon, color=AppThemeLang.SECONDARY_COLOR),
                     ft.Text(title, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
                 ]),
                 ft.Text(value, size=16, color=ft.Colors.WHITE),
@@ -25,7 +25,7 @@ def create_info_card(title, value, icon):
             padding=10,
             border_radius=8,
         ),
-        color=AppTheme.SURFACE_COLOR,
+        color=AppThemeLang.SURFACE_COLOR,
     )
 
 def create_section_title(title):

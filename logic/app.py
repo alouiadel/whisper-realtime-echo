@@ -1,6 +1,6 @@
 """Main application logic for Whisper Transcription App."""
 import flet as ft
-from ui.theme import AppTheme
+from ui.theme_lang import AppThemeLang
 from ui.app_ui import configure_page, create_header
 from ui.model_selection import ModelSelector
 from ui.transcription_ui import (
@@ -35,11 +35,11 @@ def WhisperApp(page: ft.Page):
         """Handle recorder status updates."""
         if "error" in status.lower() or "failed" in status.lower():
             status_text.value = status
-            status_text.color = AppTheme.ERROR_COLOR
+            status_text.color = AppThemeLang.ERROR_COLOR
             page.update()
         elif "saved" in status:
             status_text.value = "Recording saved"
-            status_text.color = AppTheme.SUCCESS_COLOR
+            status_text.color = AppThemeLang.SUCCESS_COLOR
             page.update()
     
     audio_recorder = AudioRecorder(on_status_update=on_recorder_status)
@@ -85,7 +85,7 @@ def WhisperApp(page: ft.Page):
         result_text.value = text
         copy_button.visible = True
         status_text.value = "Copied from history!"
-        status_text.color = AppTheme.SUCCESS_COLOR
+        status_text.color = AppThemeLang.SUCCESS_COLOR
         page.update()
         threading.Timer(2.0, reset_status).start()
     
@@ -103,9 +103,9 @@ def WhisperApp(page: ft.Page):
         """Update status text and color based on transcription process."""
         status_text.value = status
         if status == "Transcribing audio..." or status.startswith("Loading model"):
-            status_text.color = AppTheme.WARNING_COLOR
+            status_text.color = AppThemeLang.WARNING_COLOR
         elif status == "Transcription complete!":
-            status_text.color = AppTheme.SUCCESS_COLOR
+            status_text.color = AppThemeLang.SUCCESS_COLOR
         page.update()
     
     def on_result(text):
@@ -123,7 +123,7 @@ def WhisperApp(page: ft.Page):
         """Handle and display errors."""
         result_text.value = f"Error: {error}"
         status_text.value = "Error occurred"
-        status_text.color = AppTheme.ERROR_COLOR
+        status_text.color = AppThemeLang.ERROR_COLOR
         page.update()
     
     def on_complete():
@@ -136,7 +136,7 @@ def WhisperApp(page: ft.Page):
         text = result_text.value
         page.set_clipboard(text)
         status_text.value = "Copied to clipboard!"
-        status_text.color = AppTheme.SUCCESS_COLOR
+        status_text.color = AppThemeLang.SUCCESS_COLOR
         page.update()
         
         if text.strip():
@@ -148,7 +148,7 @@ def WhisperApp(page: ft.Page):
     def reset_status():
         """Reset status text to ready state."""
         status_text.value = "Ready"
-        status_text.color = AppTheme.SUCCESS_COLOR
+        status_text.color = AppThemeLang.SUCCESS_COLOR
         page.update()
     
     copy_button.on_click = copy_to_clipboard
@@ -168,21 +168,21 @@ def WhisperApp(page: ft.Page):
         transcribe_button.disabled = not is_valid_model or not has_file
         
         if not is_valid_model:
-            transcribe_button.style.bgcolor = {"": AppTheme.PRIMARY_COLOR_TRANSLUCENT}
+            transcribe_button.style.bgcolor = {"": AppThemeLang.PRIMARY_COLOR_TRANSLUCENT}
             transcribe_button.tooltip = "This model is not available in English-only mode"
         elif not has_file:
-            transcribe_button.style.bgcolor = {"": AppTheme.DISABLED_COLOR}
+            transcribe_button.style.bgcolor = {"": AppThemeLang.DISABLED_COLOR}
             transcribe_button.tooltip = "Please select an audio file first"
         else:
-            transcribe_button.style.bgcolor = {"": AppTheme.PRIMARY_COLOR}
+            transcribe_button.style.bgcolor = {"": AppThemeLang.PRIMARY_COLOR}
             transcribe_button.tooltip = None
         
         if not is_valid_model:
             status_text.value = "Note: Large and Turbo models are only available in multilingual versions"
-            status_text.color = AppTheme.WARNING_COLOR
+            status_text.color = AppThemeLang.WARNING_COLOR
         else:
             status_text.value = "Ready"
-            status_text.color = AppTheme.SUCCESS_COLOR
+            status_text.color = AppThemeLang.SUCCESS_COLOR
         
         vram_card.content.content.controls[1].value = model_selector.get_memory_info()
         speed_card.content.content.controls[1].value = model_selector.get_speed_info()
@@ -192,7 +192,7 @@ def WhisperApp(page: ft.Page):
         """Start transcription process with selected model and file."""
         if not selected_file_path.value:
             status_text.value = "Please select an audio file first"
-            status_text.color = AppTheme.ERROR_COLOR
+            status_text.color = AppThemeLang.ERROR_COLOR
             page.update()
             return
         
@@ -200,7 +200,7 @@ def WhisperApp(page: ft.Page):
         
         if model_name is None:
             status_text.value = "Invalid model selection"
-            status_text.color = AppTheme.ERROR_COLOR
+            status_text.color = AppThemeLang.ERROR_COLOR
             page.update()
             return
         
@@ -213,7 +213,8 @@ def WhisperApp(page: ft.Page):
             file_path=selected_file_path.value,
             model_name=model_name,
             device=model_selector.device_dropdown.value,
-            use_vad=vad_checkbox.value
+            use_vad=vad_checkbox.value,
+            language=model_selector.language_dropdown.value
         )
     
     transcribe_button.on_click = start_transcription

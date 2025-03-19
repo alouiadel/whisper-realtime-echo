@@ -1,5 +1,5 @@
 import flet as ft
-from ui.theme import AppTheme
+from ui.theme_lang import AppThemeLang
 
 def configure_page(page: ft.Page):
     """Configure the main app page settings"""
@@ -9,7 +9,7 @@ def configure_page(page: ft.Page):
     page.window.center()
     page.window_width = 800
     page.window_height = 700
-    page.bgcolor = AppTheme.BACKGROUND_COLOR
+    page.bgcolor = AppThemeLang.BACKGROUND_COLOR
 
 def create_header():
     """Create the app header"""

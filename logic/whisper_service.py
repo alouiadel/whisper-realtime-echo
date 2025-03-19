@@ -19,7 +19,7 @@ class WhisperService:
         self.on_error = on_error
         self.on_complete = on_complete
     
-    def transcribe(self, file_path, model_name, device, use_vad=True, vad_parameters=None):
+    def transcribe(self, file_path, model_name, device, use_vad=True, vad_parameters=None, language=None):
         """Transcribe audio file using specified Whisper model.
         
         Args:
@@ -28,6 +28,7 @@ class WhisperService:
             device: Device to run model on (cpu/cuda)
             use_vad: Whether to use VAD filter to remove silence
             vad_parameters: Custom VAD parameters dict (optional)
+            language: Language code to use for transcription (optional)
         """
         def _transcribe_thread():
             try:
@@ -41,10 +42,13 @@ class WhisperService:
                 vad_status = " with VAD filter" if use_vad else ""
                 self.on_status_update(f"Transcribing audio{vad_status}...")
                 
+                lang = None if language == "auto" else language
+                
                 segments, _ = model.transcribe(
                     file_path,
                     vad_filter=use_vad,
-                    vad_parameters=vad_parameters
+                    vad_parameters=vad_parameters,
+                    language=lang
                 )
                 
                 transcript = " ".join([segment.text for segment in segments])
