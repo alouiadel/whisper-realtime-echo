@@ -1,4 +1,4 @@
-# 🎙️ Realtime Whisper Flet
+# 🎙️ Whisper Realtime Echo 🚀
 
 A modern GUI for Faster Whisper speech recognition model using Flet framework.
 
@@ -111,7 +111,7 @@ Whisper leverages ffmpeg to process audio, supporting a wide range of formats:
 
 - View, copy, and reuse previous transcriptions
 - Saved between sessions with timestamps and model info
-- Most recent 50 entries are retained 
+- Most recent 50 entries are retained
 
 ## 📝 Notes & Limitations
 
@@ -121,7 +121,7 @@ Whisper leverages ffmpeg to process audio, supporting a wide range of formats:
   - **Transcribe**: Converts speech to text in the original language (default)
   - **Translate**: Converts speech from any language to English text
 
-- **Translation Best Practices**: 
+- **Translation Best Practices**:
   - Automatically sets language to "Auto-detect" for optimal results
   - Works best with larger models (large or turbo) and clear audio
   - Some languages may require transcribing first, then using a separate translation service
@@ -135,4 +135,3 @@ This project is powered by [Faster Whisper](https://github.com/SYSTRAN/faster-wh
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-

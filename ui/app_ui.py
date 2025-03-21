@@ -3,7 +3,7 @@ from ui.theme_lang import AppThemeLang
 
 def configure_page(page: ft.Page):
     """Configure the main app page settings"""
-    page.title = "🎙️ Whisper Transcription App ✨"
+    page.title = "🎙️ Whisper Realtime Echo 🚀"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 30
     page.window.center()
@@ -16,12 +16,12 @@ def configure_page(page: ft.Page):
 def toggle_theme(e):
     """Toggle between light and dark theme"""
     page = e.page
-    
+
     is_dark_mode = e.control.data
-    
+
     header_row = e.control.parent
     header_text = header_row.controls[0]
-    
+
     if is_dark_mode:
         page.theme_mode = ft.ThemeMode.LIGHT
         e.control.icon = ft.icons.LIGHT_MODE
@@ -40,7 +40,7 @@ def toggle_theme(e):
         page.bgcolor = AppThemeLang.DARK_BACKGROUND_COLOR
         AppThemeLang.BACKGROUND_COLOR = AppThemeLang.DARK_BACKGROUND_COLOR
         AppThemeLang.SURFACE_COLOR = AppThemeLang.DARK_SURFACE_COLOR
-    
+
     e.control.data = not is_dark_mode
     page.update()
 
@@ -50,7 +50,7 @@ def create_header():
         content=ft.Row(
             [
                 ft.Text(
-                    "🎙️ Whisper Transcription App ✨",
+                    "🎙️ Whisper Realtime Echo 🚀",
                     size=30,
                     weight=ft.FontWeight.BOLD,
                     color=ft.Colors.WHITE,
@@ -67,4 +67,4 @@ def create_header():
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
         ),
         margin=ft.margin.only(bottom=20),
-    ) 
+    )
