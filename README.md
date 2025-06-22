@@ -53,7 +53,7 @@ ct2-transformers-converter --model openai/whisper-tiny.en --output_dir int8_tiny
 
 ```bash
 # Clone repository
-git clone https://gitlab.com/alouiadel/whisper-realtime-echo.git
+git clone https://github.com/alouiadel/whisper-realtime-echo.git
 cd whisper-realtime-echo
 
 # Create and activate virtual environment
