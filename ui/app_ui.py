@@ -4,7 +4,7 @@ from ui.theme_lang import AppThemeLang
 
 def configure_page(page: ft.Page):
     """Configure the main app page settings"""
-    page.title = "🎙️ Whisper Realtime Echo 🚀"
+    page.title = "Whisper Realtime Echo"
     page.theme_mode = ft.ThemeMode.DARK
     page.padding = 30
     page.window.center()
@@ -28,7 +28,7 @@ def toggle_theme(e):
         page.theme_mode = ft.ThemeMode.LIGHT
         e.control.icon = ft.icons.LIGHT_MODE
         e.control.icon_color = ft.colors.BLACK
-        e.control.tooltip = "Switch to dark theme 🌙"
+        e.control.tooltip = "Switch to dark theme"
         header_text.color = ft.colors.BLACK
         page.bgcolor = AppThemeLang.LIGHT_BACKGROUND_COLOR
         AppThemeLang.BACKGROUND_COLOR = AppThemeLang.LIGHT_BACKGROUND_COLOR
@@ -37,7 +37,7 @@ def toggle_theme(e):
         page.theme_mode = ft.ThemeMode.DARK
         e.control.icon = ft.icons.DARK_MODE
         e.control.icon_color = ft.colors.WHITE
-        e.control.tooltip = "Switch to light theme ☀️"
+        e.control.tooltip = "Switch to light theme"
         header_text.color = ft.colors.WHITE
         page.bgcolor = AppThemeLang.DARK_BACKGROUND_COLOR
         AppThemeLang.BACKGROUND_COLOR = AppThemeLang.DARK_BACKGROUND_COLOR
@@ -53,7 +53,7 @@ def create_header():
         content=ft.Row(
             [
                 ft.Text(
-                    "🎙️ Whisper Realtime Echo 🚀",
+                    "Whisper Realtime Echo",
                     size=30,
                     weight=ft.FontWeight.BOLD,
                     color=ft.Colors.WHITE,
@@ -61,7 +61,7 @@ def create_header():
                 ft.IconButton(
                     icon=ft.icons.DARK_MODE,
                     icon_color=ft.colors.WHITE,
-                    tooltip="Switch to light theme ☀️",
+                    tooltip="Switch to light theme",
                     icon_size=24,
                     data=True,
                     on_click=toggle_theme,

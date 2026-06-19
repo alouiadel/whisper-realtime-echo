@@ -17,9 +17,11 @@ A modern GUI for Faster Whisper speech recognition model using Flet framework.
 - Select model size with VRAM/speed indicators
 - GPU (CUDA) or CPU processing
 - Real-time transcription status
+- VAD filter to remove silence from audio
 - Modular, maintainable codebase
 - Copy results to clipboard with history access
 - Toggle between light and dark themes
+- Warning banner when selecting incompatible model/type combinations
 
 ## Model Information
 
