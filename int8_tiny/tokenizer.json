@@ -14546,30 +14546,18 @@
     "special_tokens": {
       "<|endoftext|>": {
         "id": "<|endoftext|>",
-        "ids": [
-          50257
-        ],
-        "tokens": [
-          "<|endoftext|>"
-        ]
+        "ids": [50257],
+        "tokens": ["<|endoftext|>"]
       },
       "<|notimestamps|>": {
         "id": "<|notimestamps|>",
-        "ids": [
-          50363
-        ],
-        "tokens": [
-          "<|notimestamps|>"
-        ]
+        "ids": [50363],
+        "tokens": ["<|notimestamps|>"]
       },
       "<|startoftranscript|>": {
         "id": "<|startoftranscript|>",
-        "ids": [
-          50258
-        ],
-        "tokens": [
-          "<|startoftranscript|>"
-        ]
+        "ids": [50258],
+        "tokens": ["<|startoftranscript|>"]
       }
     }
   },

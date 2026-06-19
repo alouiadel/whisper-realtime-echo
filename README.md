@@ -23,14 +23,14 @@ A modern GUI for Faster Whisper speech recognition model using Flet framework.
 
 ## 📋 Model Information
 
-| Size | Parameters | English-only | Multilingual | VRAM | Speed |
-|------|------------|--------------|--------------|------|-------|
-| tiny | 39 M | ✅ tiny.en | ✅ tiny | ~1 GB | ~10x |
-| base | 74 M | ✅ base.en | ✅ base | ~1 GB | ~7x |
-| small | 244 M | ✅ small.en | ✅ small | ~2 GB | ~4x |
-| medium | 769 M | ✅ medium.en | ✅ medium | ~5 GB | ~2x |
-| large | 1550 M | ❌ N/A | ✅ large | ~10 GB | 1x |
-| turbo | 809 M | ❌ N/A | ✅ turbo | ~6 GB | ~8x |
+| Size   | Parameters | English-only | Multilingual | VRAM   | Speed |
+| ------ | ---------- | ------------ | ------------ | ------ | ----- |
+| tiny   | 39 M       | ✅ tiny.en   | ✅ tiny      | ~1 GB  | ~10x  |
+| base   | 74 M       | ✅ base.en   | ✅ base      | ~1 GB  | ~7x   |
+| small  | 244 M      | ✅ small.en  | ✅ small     | ~2 GB  | ~4x   |
+| medium | 769 M      | ✅ medium.en | ✅ medium    | ~5 GB  | ~2x   |
+| large  | 1550 M     | ❌ N/A       | ✅ large     | ~10 GB | 1x    |
+| turbo  | 809 M      | ❌ N/A       | ✅ turbo     | ~6 GB  | ~8x   |
 
 > 💡 English-only models typically perform better for English transcription.
 
@@ -88,22 +88,24 @@ python main.py
    - 🌓 Toggle theme (top-right corner)
 
 ## 🎙️ Live Transcription:
-  - Provides real-time speech-to-text from your microphone
-  - Automatically detects and processes speech in chunks
-  - Optimized for maximum responsiveness:
-    - Uses int8 quantization (reduces memory usage by ~40%)
-    - Reduced beam size (1 instead of 5)
-    - Greedy decoding with temperature=0
-    - Independent chunk processing
-    - Disabled timestamps generation
-  - Best practices:
-    - Works best in quiet environments
-    - Smaller models offer faster response times
-    - Use a clear, consistent speaking voice
+
+- Provides real-time speech-to-text from your microphone
+- Automatically detects and processes speech in chunks
+- Optimized for maximum responsiveness:
+  - Uses int8 quantization (reduces memory usage by ~40%)
+  - Reduced beam size (1 instead of 5)
+  - Greedy decoding with temperature=0
+  - Independent chunk processing
+  - Disabled timestamps generation
+- Best practices:
+  - Works best in quiet environments
+  - Smaller models offer faster response times
+  - Use a clear, consistent speaking voice
 
 ## 🎧 Supported Audio Formats
 
 Whisper leverages ffmpeg to process audio, supporting a wide range of formats:
+
 - Audio files: wav, mp3, m4a, ogg, flac, opus, amr
 - Video files: mp4 (and other video formats with audio tracks)
 

@@ -1,6 +1,7 @@
 import flet as ft
 from ui.theme_lang import AppThemeLang
 
+
 def configure_page(page: ft.Page):
     """Configure the main app page settings"""
     page.title = "🎙️ Whisper Realtime Echo 🚀"
@@ -12,6 +13,7 @@ def configure_page(page: ft.Page):
     page.window.resizable = False
     page.window.maximizable = False
     page.bgcolor = AppThemeLang.BACKGROUND_COLOR
+
 
 def toggle_theme(e):
     """Toggle between light and dark theme"""
@@ -43,6 +45,7 @@ def toggle_theme(e):
 
     e.control.data = not is_dark_mode
     page.update()
+
 
 def create_header():
     """Create the app header with theme toggle"""

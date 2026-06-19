@@ -1,18 +1,20 @@
 """Application theme and color definitions."""
 
+
 class AppThemeLang:
     """Color constants for application styling."""
+
     PRIMARY_COLOR = "#6200EE"
     PRIMARY_COLOR_TRANSLUCENT = "#6200EE80"
     SECONDARY_COLOR = "#03DAC6"
     LIVE_COLOR = "#9c27b0"
-    
+
     DARK_BACKGROUND_COLOR = "#121212"
     DARK_SURFACE_COLOR = "#1E1E1E"
-    
+
     LIGHT_BACKGROUND_COLOR = "#FFFFFF"
     LIGHT_SURFACE_COLOR = "#F5F5F5"
-    
+
     ERROR_COLOR = "#CF6679"
     WARNING_COLOR = "#FFAB40"
     SUCCESS_COLOR = "#00C853"
@@ -123,4 +125,4 @@ class AppThemeLang:
         "yo": "Yoruba",
         "zh": "Chinese",
         "yue": "Cantonese",
-    } 
+    }
